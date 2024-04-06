@@ -23,7 +23,7 @@ const App = () => (
         <Route path="/cabinet" element={<Cabinet />} />
         <Route path="/admin/*" element={<Admin />} />
         <Route path="/user/*" element={<User />} />
-        <Route path="/user-settings" element={<UserSettings />} />
+        <Route path="/user-settings/:userId" element={<UserSettings />} />
         <Route path="/sign-out" element={<SignOut />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />

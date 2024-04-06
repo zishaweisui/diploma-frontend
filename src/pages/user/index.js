@@ -13,7 +13,9 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import serviceUsers from "services/users";
+import UserSettings from './settings';
 
 const User = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -76,6 +78,10 @@ const User = () => {
         });
     }
   };
+
+  const [open, setOpenDialog] = useState(false);
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
 
   return (
     <>
@@ -234,10 +240,18 @@ const User = () => {
               fullWidth
               variant="contained"
               style={{ marginTop: '24px' }}
-              onClick={() => navigate("/user-settings")}
+              onClick={handleOpenDialog}
             >
               Password Settings
             </Button>
+            <Dialog open={open} onClose={handleCloseDialog}>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>X</Button>
+                </DialogActions>
+                <DialogContent>
+                    <UserSettings userId={userId} />
+                </DialogContent>
+            </Dialog>
           </div>
         }
       </div>

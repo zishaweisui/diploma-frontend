@@ -1,4 +1,6 @@
 import serviceApi from "./api";
+import store from "store"
+import { setTokens } from "slicers/auth";
 
 const all = () => serviceApi.get('all_users')
 
@@ -34,7 +36,6 @@ const update = (email, nickname, first_name, last_name, id) => {
       last_name,
     },
   };
-  console.log(data)
   return serviceApi.put(`users/${id}`, data);
 };
 
@@ -48,11 +49,20 @@ const update = (email, nickname, first_name, last_name, id) => {
 
 const _delete = (id) => serviceApi.delete(`users/${id}`);
 
+const updatePassword = (old_password, new_password, id) => serviceApi.post(`users/${id}/change_password`, { old_password, new_password })
+  .then((data) => {
+  store.dispatch(setTokens({ 
+    access: data.access_token,
+    refresh: data.refresh_token 
+  }))
+})
+
 const service = {
   all,
   getMe,
   update,
-  delete: _delete
+  delete: _delete,
+  updatePassword,
 }
 
 export default service

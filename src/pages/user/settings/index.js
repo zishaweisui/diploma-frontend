@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,9 +10,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import serviceAuth from 'services/auth';
+import serviceUsers from 'services/users';
 
 const UserSettings = () => {
+  const { userId } = useParams();
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -24,8 +25,8 @@ const UserSettings = () => {
       setPasswordError("New passwords do not match");
       return;
     }
-    
-    serviceAuth.updatePassword(password, newPassword)
+    console.log(userId)
+    serviceUsers.updatePassword(password, newPassword, userId)
       .then(() => {
         setUpdateSuccess(true);
         setPassword("");
@@ -44,7 +45,6 @@ const UserSettings = () => {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -100,11 +100,6 @@ const UserSettings = () => {
             Update Password
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link component={RouterLink} to="/" variant="body2">
-                Back to Home
-              </Link>
-            </Grid>
           </Grid>
         </Box>
       </Box>
