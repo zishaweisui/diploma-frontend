@@ -6,6 +6,9 @@ import SignUp from "pages/sign-up";
 import Cabinet from "pages/cabinet";
 import Admin from "pages/admin";
 import SignOut from "pages/sign-out";
+import Games from "pages/games"
+import User from "pages/user";
+import UserSettings from "pages/user/settings";
 
 const App = () => (
   <BrowserRouter>
@@ -14,10 +17,13 @@ const App = () => (
       <Route element={<RequiredAnonymous />}>
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/games" element={<Games />} />
       </Route>
       <Route element={<RequiredAuth />}>
         <Route path="/cabinet" element={<Cabinet />} />
         <Route path="/admin/*" element={<Admin />} />
+        <Route path="/user/*" element={<User />} />
+        <Route path="/user-settings" element={<UserSettings />} />
         <Route path="/sign-out" element={<SignOut />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />

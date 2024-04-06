@@ -4,11 +4,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import serviceUsers from "services/users";
 
 const columns = [
-  { field: "id", headerName: "ID" },
-  { field: "first_name", headerName: "First name" },
-  { field: "last_name", headerName: "Last name" },
-  { field: "email", headerName: "Email" },
-  { field: "nickname", headerName: "Nickname" },
+  { field: "id", headerName: "ID", width: 300 },
+  { field: "first_name", headerName: "First name", width: 150 },
+  { field: "last_name", headerName: "Last name", width: 150 },
+  { field: "email", headerName: "Email", width: 300 },
+  { field: "nickname", headerName: "Nickname", width: 300 },
 ];
 
 const Users = () => {

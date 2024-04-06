@@ -19,14 +19,35 @@ const SignUp = () => {
   const [nickname, setNickname] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [passwordError, setPasswordError] = useState("");
 
-  const isAbleSignUp = email.length && password.length && confirmPassword.length && nickname.length && firstName.length && lastName.length
+  const isAbleSignUp = email.length && password.length && confirmPassword.length && nickname.length && firstName.length && lastName.length && !passwordError;
 
   const handleSignUp = () => {
     if (!isAbleSignUp) {
-      return
+      return;
     }
-    serviceAuth.signUp(email, password, nickname, firstName, lastName)
+    serviceAuth.signUp(email, password, nickname, firstName, lastName);
+  }
+
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    setPassword(value);
+    if (confirmPassword && value !== confirmPassword) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setPasswordError("");
+    }
+  }
+
+  const handleConfirmPasswordChange = (e) => {
+    const { value } = e.target;
+    setConfirmPassword(value);
+    if (value !== password) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setPasswordError("");
+    }
   }
 
   return (
@@ -61,7 +82,7 @@ const SignUp = () => {
             label="Password"
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
           />
           <TextField
@@ -70,8 +91,10 @@ const SignUp = () => {
             label="Confirm password"
             type="password"
             value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={handleConfirmPasswordChange}
             required
+            error={!!passwordError}
+            helperText={passwordError}
           />
           <TextField
             margin="normal"

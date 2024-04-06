@@ -19,9 +19,25 @@ const post = async (url, data = {}, params = {}) =>
 
 const get = async (url, params) => makeRequest({ method: "GET", url, params });
 
+const put = async (url = "", data = {}) =>
+  makeRequest({
+    method: "PUT",
+    url,
+    data,
+  });
+
+const _delete = async (url = "", data = {}) =>
+  makeRequest({
+    method: "DELETE",
+    url,
+    data,
+  });
+
 const service = {
   post,
   get,
+  put,
+  delete: _delete,
 };
 
 export default service;

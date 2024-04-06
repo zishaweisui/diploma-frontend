@@ -2,26 +2,26 @@ import serviceApi from "./api";
 import store from "store"
 import { setTokens, clearTokens } from "slicers/auth";
 
-// const signIn = (email, password) => serviceApi.post("auth/login", { email, password }).then((data) => {
-//   store.dispatch(setTokens({ access: data.access_token, refresh: data.refresh_token }))
-// })
+const signIn = (email, password) => serviceApi.post("auth/login", { email, password }).then((data) => {
+  store.dispatch(setTokens({ access: data.access_token, refresh: data.refresh_token }))
+})
 
-const signIn = () => store.dispatch(setTokens({ access: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYwYzY4NzUwZjhjYmI3MzhmY2FiMyIsInVzZXJfaWQiOiI2MTdmY2Q2M2Q5ZWQ0ZmIzNjQ1YjgzMWMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTEyMTM2NzIuNzM4Njc3LCJleHAiOjE3MTEyMjA4NzIuNzM4Njc3LCJwdXJwb3NlIjoiYWNjZXNzIn0.FavnfFDuBeYUbS7gD43_G4tPw6fEyagIB4zso2h-nb8", refresh: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYwYzY4NzUwZjhjYmI3MzhmY2FiMyIsInVzZXJfaWQiOiI2MTdmY2Q2M2Q5ZWQ0ZmIzNjQ1YjgzMWMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTEyMTM2NzIuNzM4ODUwOCwiZXhwIjoxNzI2NzY1NjcyLjczODg1MDgsInB1cnBvc2UiOiJyZWZyZXNoIn0.hezHccBoCz-QivmVF_Vz8HLejJZLlMFanKaMPQC6TgA" }))
+// const signIn = () => store.dispatch(setTokens({ access: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYwYzY4NzUwZjhjYmI3MzhmY2FiMyIsInVzZXJfaWQiOiI2MTdmY2Q2M2Q5ZWQ0ZmIzNjQ1YjgzMWMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTEyMTM2NzIuNzM4Njc3LCJleHAiOjE3MTEyMjA4NzIuNzM4Njc3LCJwdXJwb3NlIjoiYWNjZXNzIn0.FavnfFDuBeYUbS7gD43_G4tPw6fEyagIB4zso2h-nb8", refresh: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYwYzY4NzUwZjhjYmI3MzhmY2FiMyIsInVzZXJfaWQiOiI2MTdmY2Q2M2Q5ZWQ0ZmIzNjQ1YjgzMWMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTEyMTM2NzIuNzM4ODUwOCwiZXhwIjoxNzI2NzY1NjcyLjczODg1MDgsInB1cnBvc2UiOiJyZWZyZXNoIn0.hezHccBoCz-QivmVF_Vz8HLejJZLlMFanKaMPQC6TgA" }))
 
-// const signUp = async (email, password, nickname, firstName, lastName) => {
-//   try {
-//     await serviceApi.post("signup", { email, password, nickname, first_name: firstName, last_name: lastName })
-//   } catch (e) {
-//     return Promise.reject({})
-//   }
-//   return signIn(email, password)
-// }
+const signUp = async (email, password, nickname, firstName, lastName) => {
+  try {
+    await serviceApi.post("signup", { email, password, nickname, profile: {first_name: firstName, last_name: lastName } })
+  } catch (e) {
+    return Promise.reject({})
+  }
+  return signIn(email, password)
+}
 
-const signUp = signIn
+// const signUp = signIn
 
-// const signOut = () => serviceApi.post("auth/logout").then(() => store.dispatch(clearTokens()))
+const signOut = () => serviceApi.post("auth/logout").then(() => store.dispatch(clearTokens()))
 
-const signOut = () => store.dispatch(clearTokens())
+// const signOut = () => store.dispatch(clearTokens())
 
 const getValueFromTokenPayload = (token, key) => JSON.parse(atob(token.split(".")[1]))[key];
 
@@ -34,12 +34,21 @@ const isAuthed = (token) => {
   return new Date() < new Date(getValueFromTokenPayload(token, "exp") * 1000);
 };
 
+// const refresh = () =>
+//   serviceApi
+//     .post("refresh", {
+//       refresh_token: store.getState().auth.refresh,
+//     })
+//     .then(saveTokens)
+//     .then(serviceUsers.getMe);
+
+
 const service = {
   signIn,
   signUp,
   signOut,
   getRole,
-  isAuthed
+  isAuthed,
 };
 
 export default service;
