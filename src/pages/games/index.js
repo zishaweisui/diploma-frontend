@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,6 +13,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { DataGrid } from "@mui/x-data-grid";
 import serviceGames from "services/games";
+import serviceAuth from "services/auth";
 
 const columns = [
   {
@@ -34,6 +36,17 @@ const Games = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const navigate = useNavigate()
+
+  const refresh = useSelector((state) => state.auth.refresh);
+  const isAuthenticated = serviceAuth.isAuthed(refresh);
+
+  const handleSignButtonClick = () => {
+    if (isAuthenticated) {
+      navigate("/sign-out");
+    } else {
+      navigate("/sign-in");
+    }
+  };
 
   const pages = [{ title: "Recommendation", path: "/recommendation" }];
   const handleOpenNavMenu = () => setIsOpenMenu(true);
@@ -130,10 +143,10 @@ const Games = () => {
 
             <Box sx={{ flexGrow: 0 }}>
               <Button
-                onClick={() => navigate("/sign-in")}
+                onClick={ handleSignButtonClick }
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                Sign In
+                {isAuthenticated ? "Sign Out" : "Sign In"}
               </Button>
             </Box>
           </Toolbar>

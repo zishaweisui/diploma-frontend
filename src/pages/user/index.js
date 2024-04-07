@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,16 +13,20 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import serviceUsers from "services/users";
 import UserSettings from './settings';
+import Games from 'pages/games';
 
 const User = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const navigate = useNavigate()
   
-  const pages = [{ title: "Recommendation", path: "/recommendation" }];
+  const pages = [
+    { title: "Games", path: "/user/games" },
+    { title: "Recommendation", path: "/recommendation" }
+  ];
   const handleOpenNavMenu = () => setIsOpenMenu(true);
   const handleCloseNavMenu = () => setIsOpenMenu(false);
   const handleClickMenuItem = page => {
@@ -260,4 +264,12 @@ const User = () => {
   );
 };
 
-export default User;
+const UserRoutes = () => (
+  <Routes>
+    <Route path="/" element={<User />} />
+    <Route path="/games" element={<Games />} />
+    <Route path="*" element={<Navigate to="/" />} />
+  </Routes>
+);
+
+export default UserRoutes;
