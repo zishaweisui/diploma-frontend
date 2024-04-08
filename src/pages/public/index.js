@@ -1,30 +1,29 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import UserMe from './id';
-import Games from 'pages/games';
+import Games from "pages/games";
 import Releases from "pages/releases";
 
-const User = () => {
+const Public = () => {
+
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const navigate = useNavigate()
-  
+
   const pages = [
-    { title: "Releases", path: "/user/releases" },
-    { title: "Games", path: "/user/games" },
-    { title: "Profile", path: "/user/me" },
-    { title: "Recommendation", path: "/user/recommendation" }
-  ];
+    { title: "Releases", path: "/public/releases" },
+    { title: "Games", path: "/public/games" },
+    { title: "Recommendation", path: "/public/recommendation" }
+];
   const handleOpenNavMenu = () => setIsOpenMenu(true);
   const handleCloseNavMenu = () => setIsOpenMenu(false);
   const handleClickMenuItem = page => {
@@ -106,10 +105,10 @@ const User = () => {
 
             <Box sx={{ flexGrow: 0 }}>
               <Button
-                onClick={() => navigate("/sign-out")}
+                onClick={() => navigate("/sign-in")}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                Sign Out
+                Sign In
               </Button>
             </Box>
           </Toolbar>
@@ -118,11 +117,10 @@ const User = () => {
       <Routes>
         <Route path="/releases" element={<Releases />} />
         <Route path="/games" element={<Games />} />
-        <Route path="/me" element={<UserMe />} />
-        <Route path="*" element={<Navigate to="/user/me" />} />
+        <Route path="*" element={<Navigate to="/public/releases" />} />
       </Routes>
     </>
   );
 };
 
-export default User;
+export default Public;
