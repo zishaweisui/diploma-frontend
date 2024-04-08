@@ -1,76 +1,104 @@
 import { useState, useEffect } from "react";
-import Container from "@mui/material/Container";
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import IconButton from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 import serviceReleases from "services/releases";
+import Container from "@mui/material/Container";
+import Box from '@mui/joy/Box';
+import IconButton from "@mui/material/IconButton";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import AspectRatio from "@mui/joy/AspectRatio";
+import CardOverflow from "@mui/joy/CardOverflow";
+import Divider from "@mui/joy/Divider";
+import Link from "@mui/joy/Link";
+import Favorite from "@mui/icons-material/Favorite";
 
-const Releases = () => {
-
-    const [releases, setReleases] = useState([]);
-  
-    useEffect(() => {
-        serviceReleases
-        .all()
-        .then((data) => {
-            setReleases(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching games:", error);
-        });
-    }, []);
-  
+const ReleaseCard = ({ release }) => {
   return (
-    <Container component="main" maxWidth="md" sx={{ marginTop: 5 }}>
-      {releases.map((release) => (
-        <Card
-        color="primary"
-        invertedColors={false}
-        orientation="horizontal"
-        size="sm" 
-        variant="outlined"
-        sx={{ marginBottom: 2 }}
-        key={release.id}
-      >
-        <CardContent sx={{ position: "relative" }}>
-          <div style={{ position: "absolute", top: "0.875rem", right: "0.5rem" }}>
-            <IconButton
-              aria-label="bookmark Bahamas Islands"
-              variant="plain"
-              color="neutral"
-              size="sm"
-            >
-              <BookmarkAdd />
-            </IconButton>
-          </div>
-          <Typography level="title-lg">
-           {release.name}
-            </Typography>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-              Release Date: {release.release_date}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Distribution Type: {release.distribution_type}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Platform: {release.platform}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Region: {release.region}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+    <Card variant="outlined" sx={{width: 400}}>
+      <CardOverflow>
+        {/* <AspectRatio ratio="2">
+          <img
+            src={release.image}
+            srcSet={release.image}
+            loading="lazy"
+            alt={release.name}
+          />
+        </AspectRatio> */}
+        <IconButton
+          aria-label={`Like ${release.id}`}
+          size="md"
+          variant="solid"
+          color="danger"
+          sx={{
+            position: "absolute",
+            zIndex: 2,
+            borderRadius: "50%",
+            right: "1rem",
+            bottom: 0,
+            transform: "translateY(50%)",
+          }}
+        >
+          <Favorite />
+        </IconButton>
+      </CardOverflow>
+      <CardContent>
+        <Typography level="title-lg">
+            {release.name}
+        </Typography>
+        <Typography level="body-sm">
+          {release.platform}
+        </Typography>
+      </CardContent>
+      <CardOverflow variant="soft">
+        <Divider inset="context" />
+        <CardContent orientation="horizontal">
+          <Typography level="body-xs">
+            {release.distribution_type} | {release.region}
+          </Typography>
+          <Typography level="body-xs">
+            Release Date: {release.release_date}
+          </Typography>
+          <Typography level="body-xs">
               Publishers:{" "}
               {release.publishers.map((publisher) => publisher.name).join(", ")}
             </Typography>
         </CardContent>
-      </Card>
-      ))}
+      </CardOverflow>
+    </Card>
+  );
+};
+
+const Releases = () => {
+  const [releases, setReleases] = useState([]);
+
+  useEffect(() => {
+    serviceReleases
+      .all()
+      .then((data) => {
+        setReleases(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching games:", error);
+      });
+  }, []);
+
+  return (
+    <Container maxWidth="lg" sx={{ marginTop: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: 3,
+        }}
+      >
+        {releases.map((release) => (
+          <ReleaseCard key={release.id} release={release} />
+        ))}
+      </Box>
     </Container>
   );
 };
-  
-  export default Releases;
-  
+
+
+export default Releases;
