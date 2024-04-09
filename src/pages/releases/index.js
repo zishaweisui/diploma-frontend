@@ -9,21 +9,20 @@ import Typography from "@mui/material/Typography";
 import AspectRatio from "@mui/joy/AspectRatio";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Divider from "@mui/joy/Divider";
-import Link from "@mui/joy/Link";
 import Favorite from "@mui/icons-material/Favorite";
 
 const ReleaseCard = ({ release }) => {
   return (
     <Card variant="outlined" sx={{width: 400}}>
-      <CardOverflow>
-        {/* <AspectRatio ratio="2">
-          <img
-            src={release.image}
-            srcSet={release.image}
+      <AspectRatio ratio="2">
+        <img
+            src={release.image_url}
+            srcSet={release.image_url}
             loading="lazy"
-            alt={release.name}
+            alt=""
           />
-        </AspectRatio> */}
+      </AspectRatio>
+      <CardOverflow>
         <IconButton
           aria-label={`Like ${release.id}`}
           size="md"
@@ -49,16 +48,17 @@ const ReleaseCard = ({ release }) => {
           {release.platform}
         </Typography>
       </CardContent>
+
       <CardOverflow variant="soft">
         <Divider inset="context" />
         <CardContent orientation="horizontal">
           <Typography level="body-xs">
             {release.distribution_type} | {release.region}
           </Typography>
-          <Typography level="body-xs">
+          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
             Release Date: {release.release_date}
           </Typography>
-          <Typography level="body-xs">
+          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
               Publishers:{" "}
               {release.publishers.map((publisher) => publisher.name).join(", ")}
             </Typography>
